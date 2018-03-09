@@ -1,28 +1,32 @@
 {
-  "name": "ex-express",
-  "version": "1.0.0",
-  "description": "study node express app",
-  "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/LeadJockey/ex-express.git"
-  },
-  "keywords": [
-    "node",
-    "express",
-    "javascript"
-  ],
-  "author": "Shawn",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/LeadJockey/ex-express/issues"
-  },
-  "homepage": "https://github.com/LeadJockey/ex-express#readme",
-  "dependencies": {
-    "express": "^4.16.2",
-    "nodemon": "^1.17.1"
-  }
+	"name": "ex-express",
+	"version": "1.0.0",
+	"description": "study node express app",
+	"main": "app.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "nodemon src/app.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/LeadJockey/ex-express.git"
+	},
+	"keywords": [
+		"node",
+		"express",
+		"javascript"
+	],
+	"author": "Shawn",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/LeadJockey/ex-express/issues"
+	},
+	"homepage": "https://github.com/LeadJockey/ex-express#readme",
+	"dependencies": {
+		"body-parser": "^1.18.2",
+		"express": "^4.16.2",
+		"express-promise": "^0.4.0",
+		"mongoose": "^5.0.9",
+		"nodemon": "^1.17.1"
+	}
 }
