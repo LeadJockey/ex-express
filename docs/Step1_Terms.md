@@ -18,7 +18,7 @@
 12. query
 13. callback hell
 14. promise
-15. pipe pattern
+15. pipeline pattern
 
 ## 1. node?
 > Node.js는 확장성 있는 네트워크 애플리케이션(특히 서버 사이드) 개발에 사용되는 소프트웨어 플랫폼이다. 작성 언어로 자바스크립트를 활용하며 Non-blocking I/O와 단일 스레드 이벤트 루프를 통한 높은 처리 성능을 가지고 있다.
@@ -178,15 +178,15 @@ app.METHOD(PATH, HANDLER)
 
 > 몽고디비 질의문 문서를 보면 Node.js 에서 어떻게 잘의문을 설정해야 하는지에 대해서 설명이 잘 나와있습니다. 참고하세요~
 
-출처 : [docs.mongodb.com](https://docs.mongodb.com/manual/tutorial/query-documents/)
+참고 : [docs.mongodb.com](https://docs.mongodb.com/manual/tutorial/query-documents/)
 
 > 하지만 몽구스를 사용하시면 몽구스 사용 예제를 보셔야 겠죵?
 
-출처 : [docs.mongodb.com](http://mongoosejs.com/docs/queries.html)
+참고 : [mongoosejs](http://mongoosejs.com/docs/queries.html)
 
 * 몽구스는 "thenable" 입니다. 다라서 콜백핼을 생성하지 않고도 순차적 처리가 가능합니다.
 
-출처 : [docs.mongodb.com](http://mongoosejs.com/docs/promises.html)
+참고 : [mongoosejs](http://mongoosejs.com/docs/promises.html)
 
 * 실제 적용 예시
 
@@ -217,10 +217,26 @@ method.getUsers = () => {
 method.getUserByUserEmail = (userEmail, userPwd, done) => {
 	const query = User.findOne({userEmail: userEmail}, 'userEmail userPwd userName');
 	return query.select('userEmail userPwd userName')
-				 .then((user) => !user ? done(null, false) : user)
+	             .then((user) => !user ? done(null, false) : user)
                  .then((user) => user.comparePassword(userPwd) ? done(null, user) : done(null, false))
                  .catch((err) => done(err));
 };
 
 module.exports = method;
 ```
+
+## 13-14. callback hell & promise
+> 콜백헬이 생기는 이유와 해결법인 프로미스에 대해서 알아보자
+
+참고 : [medium.com](https://medium.com/@pitzcarraldo/callback-hell-%EA%B3%BC-promise-pattern-471976ffd139)
+
+## 15. pipeline pattern
+
+> 파이프 함수는 n 개의 연산 순서를 취합니다. 각 연산은 인수를 취하고, 그것을 처리합니다.
+> 처리 된 출력을 시퀀스의 다음 작업을위한 입력 으로 제공합니다.
+> 파이프 함수의 결과는 조작 순서의 묶음 버전입니다.
+
+* 파이프는 함수를 순서에 맞게 실행시기는 일종의 기법입니다. 참고자료를 통해서 알아가시면 좋을것 같아요.
+
+참고 : [medium.com](https://medium.com/@venomnert/pipe-function-in-javascript-8a22097a538e)
+
