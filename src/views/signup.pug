@@ -1,0 +1,22 @@
+doctype html
+html
+	head(lang="ko")
+		title shawn's dev log
+	body
+		#s-wrapper
+			h2=msg
+			form(method="post" action="/user/signup")
+				fieldset
+					legend 회원가입 화면
+					p
+						label 이메일
+						input(type="text" name="userEmail" id="userEmail" placeholder="Email")
+					p
+						label 비밀번호
+						input(type="password" name="userPwd" id="userPwd" placeholder="Password")
+					p
+						label 이름
+						input(type="text" name="userName" id="userName" placeholder="Name")
+					p
+						button(type="submit") 회원등록
+

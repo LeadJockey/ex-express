@@ -1,26 +1,36 @@
+const passport   = require('./passport');
 const controller = require('./controller');
 const user       = {};
 
-user.controller = controller;
-
-user.promisify  = (req, res, next) => {
+user.promisify = (req, res, next) => {
 	//배경 : 비동기식 요청에 따른 반응의 동기성이 필요 할 때
 	//문제 : callback hell
 	//해결 : promise
 	
-	const opts = ['json', 'render', 'send'];
-	
-	res.sendFromPromise = (promiseObj) => {
+	res.getTargetMethod = (method) => {
+		const opts       = ['json', 'render', 'send'];
+		let targetMethod = 'send';
+		opts.forEach((value, index) => {
+			if (method === value) {
+				targetMethod = method;
+			}
+		});
+		return targetMethod;
+	};
+	res.sendFromPromise = (promiseObj, method, extra) => {
+		
+		const targetMethod = res.getTargetMethod(method);
 		promiseObj
-			.then((result) => res.send(result))
-			.catch((err) => res.send(err))
+			.then((result) => res[targetMethod]({status: 200,login:extra.login, data: result}))
+			.catch((err) => res[targetMethod]({status: 500, err: err}))
 	};
 	
 	next();
 };
+user.send      = (req, res) => res.sendFromPromise(req.promisedReq, 'send',{});
+user.json      = (req, res) => res.sendFromPromise(req.promisedReq, 'json',{login:res.locals.login});
 
-user.render     = (req, res) => {
-	res.sendFromPromise(req.promisedReq);
-};
+user.controller = controller;
+user.passport   = passport;
 
-module.exports  = user;
+module.exports = user;

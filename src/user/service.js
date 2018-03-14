@@ -7,10 +7,18 @@
 const da     = require('./data-access');
 const method = {};
 
-// method.createUser = (req, res) => da.createUser(req, res);
+method.createUser = (req) => {
+	const body    = req.body;
+	const userEmail = body.userEmail || '';
+	const userPwd   = body.userPwd || '';
+	const userName  = body.userName || '';
+	return da.createUser(userEmail, userPwd, userName);
+};
 
-// 회원리스트에 대한 요청이 있는 경우의 서비스 메서드
+// 회원리스트에 대한 요청 시
 method.getUsers = () => da.getUsers();
+// 로그인 요청에 대한 요청 시
+method.login    = (userEmail, userPwd, done) => da.getUserByUserEmail(userEmail, userPwd, done);
 
 
 module.exports = method;
