@@ -226,7 +226,7 @@ module.exports = method;
 ```
 
 ## 13-14. callback hell & promise
-> 콜백헬이 생기는 이유와 해결법인 프로미스에 대해서 알아보자
+* 콜백헬이 생기는 이유와 해결법인 프로미스에 대해서 알아보자
 
 참고 : [medium.com](https://medium.com/@pitzcarraldo/callback-hell-%EA%B3%BC-promise-pattern-471976ffd139)
 
