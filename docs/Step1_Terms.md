@@ -154,11 +154,73 @@ app.METHOD(PATH, HANDLER)
 참조 : [developer.mozilla.org](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/routes)
 
 ## 10. service?
-> 데이터 정제나, 웹이 아니여도 돌아 갈수 있는 부분을 따로 구분하여 계층화 합니다.
-> 다른게는 business logic layer 라고도 부르는데요, 방식은 많으니 참고 하셨으면합니다.
-> 저는 service 를 통해서만 데이터에 접근 하도록 구조를 잡아보았어요
-> 이 계층에서 수행하는 작업은 데이터 정제 입니다.
+데이터 정제나, 웹이 아니여도 돌아 갈수 있는 부분을 따로 구분하여 계층화 합니다.
+다른게는 business logic layer 라고도 부르는데요, 방식은 많으니 참고 하셨으면합니다.
+저는 service 를 통해서만 데이터에 접근 하도록 구조를 잡아보았어요
+이 계층에서 수행하는 작업은 데이터 정제 입니다.
 
 참조 : [developer.mozilla.org](https://codeburst.io/structuring-business-logic-in-node-js-application-326ba4dec658)
 
 ## 11. data access layer?
+> 예를 들어 삽입 , 삭제 및 업데이트 와 같은 명령을 사용하여 데이터베이스의 특정 테이블에 액세스하는 대신 클래스와 몇 가지 저장 프로 시저를 데이터베이스에 만들 수 있습니다.
+> 프로시 저는 클래스 내부의 메소드에서 호출되어 요청 된 값을 포함하는 객체를 리턴합니다.
+> 또는 insert, delete 및 update 명령은 데이터 액세스 계층 내에 저장된 registeruser 또는 loginuser 와 같은 간단한 함수 내에서 실행할 수 있습니다.
+> 또한 응용 프로그램의 비즈니스 논리 메서드를 데이터 액세스 계층에 매핑 할 수 있습니다. 예를 들어, 여러 테이블에서 모든 사용자를 페치 (fetch)하기 위해 데이터베이스로 쿼리를 작성하는 대신, 애플리케이션은 DAL로부터 하나의 메소드를 호출하여 해당 데이터베이스 호출을 추상화 할 수 있습니다.
+
+* 줄여서 DAL 이라고 명칭을 사용하는데, 제 서버 구조에서는 mongoose 모듈을 이용하여 몽고 디비에 쿼리를 날리는 역할과 예외처리가 담겨 있습니다.
+* model : 프로젝트 상에서 모델도 설명을 해야 하는데, mongoose.Schema 를 통해서 인스턴스로 생성이 되고, 데이터의 형태 (스키마) 와 데이터 입출력시 유효성을 담당하는 메서드들로 이루어져 있습니다.
+* 이렇게 생성된 mongoose.model() 을 DAL 에서 사용하게 됩니다.
+
+출처 : [wikipedia](https://en.wikipedia.org/wiki/Data_access_layer)
+
+## 12. query?
+쿼리는 디비에게 내리는 명령어로, 질의 라고 불리죠, 이러한 질의의 문법과 조합에 따라서 원하는 정보를 수집해서 가져올 수 있습니다.
+
+> 몽고디비 질의문 문서를 보면 Node.js 에서 어떻게 잘의문을 설정해야 하는지에 대해서 설명이 잘 나와있습니다. 참고하세요~
+
+출처 : [docs.mongodb.com](https://docs.mongodb.com/manual/tutorial/query-documents/)
+
+> 하지만 몽구스를 사용하시면 몽구스 사용 예제를 보셔야 겠죵?
+
+출처 : [docs.mongodb.com](http://mongoosejs.com/docs/queries.html)
+
+* 몽구스는 "thenable" 입니다. 다라서 콜백핼을 생성하지 않고도 순차적 처리가 가능합니다.
+
+출처 : [docs.mongodb.com](http://mongoosejs.com/docs/promises.html)
+
+* 실제 적용 예시
+
+```javascript
+const User   = require('./user-schema');
+const method = {};
+
+// 유저 생성
+method.createUser = (userEmail, userPwd, userName) => {
+	const newUser     = new User();
+	newUser.userEmail = userEmail;
+	newUser.userPwd   = userPwd;
+	newUser.userName  = userName;
+	const query       = newUser.save();
+	return query.then(() => `created user ${userName}`)
+							.catch((err) => err);
+};
+
+// 모든 유저리스트를 가져온다
+method.getUsers = () => {
+	const query = User.find({}, 'userEmail userPwd userName');
+	return query.select('userEmail userPwd userName')
+							.then((users) => users)
+							.catch((err) => err);
+};
+
+// userEmail 으로 유저 한명을 찾기
+method.getUserByUserEmail = (userEmail, userPwd, done) => {
+	const query = User.findOne({userEmail: userEmail}, 'userEmail userPwd userName');
+	return query.select('userEmail userPwd userName')
+							.then((user) => !user ? done(null, false) : user)
+							.then((user) => user.comparePassword(userPwd) ? done(null, user) : done(null, false))
+							.catch((err) => done(err));
+};
+
+module.exports = method;
+```
