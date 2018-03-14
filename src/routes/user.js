@@ -7,10 +7,7 @@ module.exports = (user) => {
 		msg    : 'next',
 		isLogin: res.locals.login
 	}));
-	userRouter.get('/logout', (req, res) => {
-		req.logout();
-		res.redirect('/');
-	});
+
 	
 	userRouter.get('/signup', (req, res) => res.render('signup', {msg: 'signup'}));
 	userRouter.post('/signup', user.controller.createUser, (req, res) => res.redirect('/'));
@@ -20,6 +17,14 @@ module.exports = (user) => {
 		successRedirect: '/user/list',
 		failureRedirect: '/user/login'
 	}));
+	
+	userRouter.get('/logout', (req, res) => {
+		req.logout();
+		res.redirect('/');
+	});
+	
+	
+	
 	
 	return userRouter;
 };

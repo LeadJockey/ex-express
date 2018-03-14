@@ -95,7 +95,7 @@ function createApplication() {
 
 출처 : [wikipedia](https://ko.wikipedia.org/wiki/%EB%AF%B8%EB%93%A4%EC%9B%A8%EC%96%B4)
 
-익스프레스에서 middleware 사용 예시
+* 익스프레스에서 middleware 사용 예시
 >미들웨어 함수는 요청 오브젝트(req), 응답 오브젝트 (res), 그리고 애플리케이션의 요청-응답 주기 중 그 다음의 미들웨어 함수 대한 액세스 권한을 갖는 함수입니다. 그 다음의 미들웨어 함수는 일반적으로 next라는 이름의 변수로 표시됩니다.
 > 미들웨어 함수는 다음과 같은 태스크를 수행할 수 있습니다.
  
@@ -124,3 +124,41 @@ app.listen(3000);
 출처 : [expressjs](http://expressjs.com/ko/guide/writing-middleware.html)
 
 ## 8. router?
+>라우팅은 URI(또는 경로) 및 특정한 HTTP 요청 메소드(GET, POST 등)인 특정 엔드포인트에 대한 클라이언트 요청에 애플리케이션이 응답하는 방법을 결정하는 것을 말합니다.
+ 각 라우트는 하나 이상의 핸들러 함수를 가질 수 있으며, 이러한 함수는 라우트가 일치할 때 실행됩니다.
+ 라우트 정의에는 다음과 같은 구조가 필요합니다.
+ 
+ * 라우트의 사용 예시
+ ```javascript
+app.METHOD(PATH, HANDLER)
+/*
+* app은 express의 인스턴스입니다.
+* METHOD는 HTTP 요청 메소드입니다.
+* PATH는 서버에서의 경로입니다.
+* HANDLER는 라우트가 일치할 때 실행되는 함수입니다.
+* */
+```
+
+* 제 코드에서느 라우트의 역할은 요청이 들어온 경로에 대한 HANDLER (controller) 를 매핑해 주는 역할을 수행합니다.
+
+출처 : [expressjs](http://expressjs.com/ko/starter/basic-routing.html)
+
+## 9. controller?
+
+사실 제가 알아본 바로는 컨트롤러의 역할은 모델에서 알맞은 메서드를 찾아서 라우터에 알맞은 핸들러를 장착해 주는것이 주 목적이였던것 같아요.
+이렇게 하기 위해서는 컨틀롤러에 model 객체를 집어 넣어넣야 하는 상황이 발생하게 되는데요.
+간단한 데이터를 가져올때는 상관없겠지만, 두개 이상의 모댈에서 가져온 값을 정제해야 하는 경우에는 controller 가 단순한 메핑 작업 뿐만 아니라 데이터 정제작업도 같이 수행하게 됩니다.
+이렇게 되면 수행해야 하는 작업의 구분이 명확하게 나뉘어 지지 않아서 관심사의 분리가 필요하다고 생각했어요.
+그러기 위해서는 router 가 controller 를 가져가고 controller 는 service 를 호출하고 , service 를 통해서 데이터에 접근 하는 방식을 선택했습니다.
+
+참조 : [developer.mozilla.org](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/routes)
+
+## 10. service?
+> 데이터 정제나, 웹이 아니여도 돌아 갈수 있는 부분을 따로 구분하여 계층화 합니다.
+> 다른게는 business logic layer 라고도 부르는데요, 방식은 많으니 참고 하셨으면합니다.
+> 저는 service 를 통해서만 데이터에 접근 하도록 구조를 잡아보았어요
+> 이 계층에서 수행하는 작업은 데이터 정제 입니다.
+
+참조 : [developer.mozilla.org](https://codeburst.io/structuring-business-logic-in-node-js-application-326ba4dec658)
+
+## 11. data access layer?
