@@ -4,6 +4,7 @@ const path           = require('path');
 const mongoose       = require('mongoose');
 const database       = mongoose.connection;
 const user           = require('./user');
+const userRouter     = require('./routes/user');
 const morgan         = require('morgan');
 const expressSession = require('express-session');
 
@@ -26,42 +27,18 @@ app.use(expressSession({secret: 'my key', resave: true, saveUninitialized: true}
 app.use(user.passport.initialize()); // passport 구동
 app.use(user.passport.session()); // 세션 연결
 
-//로그인 여부 확인 미들웨어
-app.use(function (req, res, next) {
-	res.locals.login = req.isAuthenticated();
-	console.log('login : ', res.locals.login);
-	next();
-});
-
 //app routing setting
-app.get('/', (req, res) => res.render('index', {
-	msg    : 'hello index',
-	isLogin: res.locals.login
-}));
+app.get('/', (req, res) => {
+	res.render('index', {
+		msg    : 'hello index',
+		isLogin: res.locals.login || false
+	});
+});
 
 // user routing setting
 app.use(user.promisify);
-const userRouter = express.Router();
-
-userRouter.get('/list', user.controller.getUsers, user.json);
-userRouter.get('/next', (req, res) => res.render('index', {
-	msg    : 'next',
-	isLogin: res.locals.login
-}));
-userRouter.get('/logout', (req, res) => {
-	req.logout();
-	res.redirect('/');
-});
-
-userRouter.get('/signup', (req, res) => res.render('signup', {msg: 'signup'}));
-userRouter.post('/signup', user.controller.createUser, (req, res) => res.redirect('/'));
-
-userRouter.get('/login', (req, res) => res.render('login', {msg: 'login'}));
-userRouter.post('/login', user.passport.authenticate('local-login', {
-	successRedirect: '/user/list',
-	failureRedirect: '/user/login'
-}));
-app.use('/user', userRouter);
+app.use(user.authenticatify);
+app.use('/user', userRouter(user));
 
 //error page handler
 app.use('*', (req, res) => res.json({status: 404}));

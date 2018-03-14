@@ -27,6 +27,11 @@ user.promisify = (req, res, next) => {
 	
 	next();
 };
+user.authenticatify = (req,res,next)=>{
+	res.locals.login = req.isAuthenticated();
+	console.log('login : ', res.locals.login);
+	next();
+};
 user.send      = (req, res) => res.sendFromPromise(req.promisedReq, 'send',{});
 user.json      = (req, res) => res.sendFromPromise(req.promisedReq, 'json',{login:res.locals.login});
 
