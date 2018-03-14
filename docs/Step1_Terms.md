@@ -202,24 +202,24 @@ method.createUser = (userEmail, userPwd, userName) => {
 	newUser.userName  = userName;
 	const query       = newUser.save();
 	return query.then(() => `created user ${userName}`)
-							.catch((err) => err);
+                 .catch((err) => err);
 };
 
 // 모든 유저리스트를 가져온다
 method.getUsers = () => {
 	const query = User.find({}, 'userEmail userPwd userName');
 	return query.select('userEmail userPwd userName')
-							.then((users) => users)
-							.catch((err) => err);
+                 .then((users) => users)
+                 .catch((err) => err);
 };
 
 // userEmail 으로 유저 한명을 찾기
 method.getUserByUserEmail = (userEmail, userPwd, done) => {
 	const query = User.findOne({userEmail: userEmail}, 'userEmail userPwd userName');
 	return query.select('userEmail userPwd userName')
-							.then((user) => !user ? done(null, false) : user)
-							.then((user) => user.comparePassword(userPwd) ? done(null, user) : done(null, false))
-							.catch((err) => done(err));
+				 .then((user) => !user ? done(null, false) : user)
+                 .then((user) => user.comparePassword(userPwd) ? done(null, user) : done(null, false))
+                 .catch((err) => done(err));
 };
 
 module.exports = method;
