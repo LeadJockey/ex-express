@@ -26,7 +26,7 @@ root+
            |      |service.js
            |      |user-schema.js
            |
-           |views-+ // views
+           |views-+ // views-root-dir
            |      |index.pug 
            |      |login.pug
            |      |signup.pug

@@ -17,6 +17,19 @@ method.createUser = (userEmail, userPwd, userName) => {
 							.catch((err) => err);
 };
 
+//유저 수정
+method.updateUser = (req) => {
+	const query = User.update({userEmail: req.body.userEmail}, {$set: req.body});
+	return query.then(() => 'status:200').catch((err) => err);
+};
+
+//유저 삭제
+method.deleteUser = (req) => {
+	const query = User.remove({userEmail: req.body.userEmail});
+	return query.then(() => {
+		console.log('log - DA : delete / status:200')
+	}).catch((err) => err);
+};
 
 
 // 모든 유저리스트를 가져온다

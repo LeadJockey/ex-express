@@ -4,6 +4,7 @@ const path           = require('path');
 const mongoose       = require('mongoose');
 const database       = mongoose.connection;
 const user           = require('./user');
+const indexRouter    = require('./routes');
 const userRouter     = require('./routes/user');
 const morgan         = require('morgan');
 const expressSession = require('express-session');
@@ -28,12 +29,7 @@ app.use(user.passport.initialize()); // passport 구동
 app.use(user.passport.session()); // 세션 연결
 
 //app routing setting
-app.get('/', (req, res) => {
-	res.render('index', {
-		msg    : 'hello index',
-		isLogin: res.locals.login || false
-	});
-});
+app.use('/',indexRouter);
 
 // user routing setting
 app.use(user.promisify);

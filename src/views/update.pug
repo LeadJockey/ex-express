@@ -1,0 +1,23 @@
+doctype html
+html
+	head(lang="ko")
+		title shawn's dev log
+	body
+		#s-wrapper
+			h2=msg
+			form(method="post" action="/user/update")
+				fieldset
+					legend 회원정보 수정 화면
+					p
+						label 이메일
+						input(type="text" name="userEmail" id="userEmail" value=user.userEmail)
+					p
+						label 비밀번호
+						input(type="password" name="userPwd" id="userPwd" value=user.userPwd)
+					p
+						label 이름
+						input(type="text" name="userName" id="userName" value=user.userName)
+					p
+						button(type="submit") 확인
+						a(href="/user/info") 취소
+

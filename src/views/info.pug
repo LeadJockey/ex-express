@@ -1,0 +1,24 @@
+doctype html
+html
+	head(lang="ko")
+		title shawn's dev log
+	body
+		#s-wrapper
+			h2=msg
+			form(method="post" action="/user/leave")
+				fieldset
+					legend 회원정보 화면
+					p
+						label 이메일
+						input(type="text" name="userEmail" id="userEmail" value=user.userEmail readonly)
+					p
+						label 비밀번호
+						input(type="password" name="userPwd" id="userPwd" value=user.userPwd readonly)
+					p
+						label 이름
+						input(type="text" name="userName" id="userName" value=user.userName readonly)
+					p
+						a(href="/user/update") 수정
+						button(type="submit") 삭제
+
+
