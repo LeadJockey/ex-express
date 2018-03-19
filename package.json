@@ -23,6 +23,7 @@
 	},
 	"homepage": "https://github.com/LeadJockey/ex-express#readme",
 	"dependencies": {
+		"cors": "^2.8.4",
 		"express": "^4.16.2",
 		"express-promise": "^0.4.0",
 		"express-session": "^1.15.6",

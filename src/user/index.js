@@ -29,6 +29,7 @@ user.promisify      = (req, res, next) => {
 };
 user.authenticatify = (req, res, next) => {
 	res.locals.login = req.isAuthenticated();
+	// console.log('log - session check : ', req.session);
 	console.log('log - user/index : ', res.locals.login);
 	next();
 };

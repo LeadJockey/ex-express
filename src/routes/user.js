@@ -1,11 +1,12 @@
 const express    = require('express');
 const userRouter = express.Router();
+const cors = require('cors');
 
 module.exports = (user) => {
 	// 회원 리스트
-	userRouter.get('/list', user.controller.getUsers, user.json);
+	userRouter.get('/list', cors(), user.controller.getUsers, user.json);
 	// 회원 리스트 로그인 후
-	userRouter.get('/next', (req, res) => res.render('index', {
+	userRouter.get('/next', cors(), (req, res) => res.render('index', {
 		msg    : 'next',
 		isLogin: res.locals.login
 	}));

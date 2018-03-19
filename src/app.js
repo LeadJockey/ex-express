@@ -8,12 +8,16 @@ const indexRouter    = require('./routes');
 const userRouter     = require('./routes/user');
 const morgan         = require('morgan');
 const expressSession = require('express-session');
+const cors           = require('cors');
 
 //app config setting
 app.set('port', 3000);
 app.set('databaseUrl', 'mongodb://localhost/test');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
+
+//cors setting /*origin:'http://172.28.32.250:4000'*/
+app.options('*', cors()); // include before other routes
 
 //app database setting
 database.on('error', console.error);
@@ -23,13 +27,15 @@ mongoose.connect(app.get('databaseUrl'));
 //app middleware setting
 app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded()); // for parsing application x-www-form-urlencoded
+
+//  for Cross Origin Resource Sharing
 app.use(morgan('dev'));
 app.use(expressSession({secret: 'my key', resave: true, saveUninitialized: true}));
 app.use(user.passport.initialize()); // passport 구동
 app.use(user.passport.session()); // 세션 연결
 
 //app routing setting
-app.use('/',indexRouter);
+app.use('/', indexRouter);
 
 // user routing setting
 app.use(user.promisify);
